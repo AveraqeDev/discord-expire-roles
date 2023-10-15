@@ -14,7 +14,7 @@ Output of process is in `out.log`
 To start process, run:
 ```
 nohup make start > out.log 2>&1 &
-echo $1 > pid.txt
+echo $! > pid.txt
 ```
 
 To kill process, run:
