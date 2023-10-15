@@ -76,7 +76,7 @@ async def command_error(ctx: commands.Context, error):
         await ctx.reply("Not allowed...")
 
 
-@tasks.loop(seconds=10)
+@tasks.loop(seconds=30)
 async def expire_roles():
     print("Checking for expired roles...")
     for expiry in db.list_expiries():
