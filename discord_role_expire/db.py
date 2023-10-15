@@ -1,12 +1,9 @@
 import os
-import logging
 import sqlite3
 from typing import Iterator
 from datetime import datetime
 
 from discord_role_expire.types import Expiry
-
-log = logging.getLogger(__name__)
 
 TABLE_NAME = "expiry"
 
@@ -15,7 +12,7 @@ cursor = connection.cursor()
 
 
 def init() -> None:
-    log.info("Initializing DB...")
+    print("Initializing DB...")
     with connection:
         cursor.execute(
             (
@@ -27,7 +24,7 @@ def init() -> None:
 
 
 def de_init() -> None:
-    log.info("Deinitializing DB...")
+    print("Deinitializing DB...")
     cursor.close()
     connection.close()
 
@@ -41,7 +38,7 @@ async def insert(expiry: Expiry) -> None:
                 f"'{expiry['expires_at'].isoformat()}')"
             )
         )
-        log.info("Expiry inserted into db:", f"{expiry=}")
+        print("Expiry inserted into db:", f"{expiry=}")
 
 
 async def remove(expiry: Expiry) -> None:
@@ -53,12 +50,12 @@ async def remove(expiry: Expiry) -> None:
             ),
             (expiry["member_id"], expiry["guild_id"], expiry["role_id"]),
         )
-        log.info("Expiry removed from db:", f"{expiry=}")
+        print("Expiry removed from db:", f"{expiry=}")
 
 
 def list_expiries() -> Iterator[Expiry]:
     with connection:
-        log.info("Getting expiries...")
+        print("Getting expiries...")
         rows = cursor.execute(
             f"SELECT member_id, guild_id, role_id, expires_at FROM {TABLE_NAME}"
         ).fetchall()
